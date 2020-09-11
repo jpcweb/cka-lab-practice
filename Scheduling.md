@@ -45,6 +45,7 @@ spec:
 </details>
 
 ### Understand the role of DaemonSets
+<p>Create a daemonset that runs nginx</p>
 
 <details><summary>show</summary>
 <p>
