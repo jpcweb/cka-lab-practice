@@ -21,6 +21,7 @@ kubernetes.io > Documentation > Reference > Command line tools reference > [kube
 ### 
 
 ### Use label selectors to schedule Pods
+<p>Label a node size=Large and create an nginx pod that runs on it</p>
 
 <details><summary>show</summary>
 <p>
@@ -83,6 +84,8 @@ $ kubectl create -f daemonset.yaml
 </details>
 
 ### Understand how resource limits can affect Pod Scheduling
+<p>Create a resource quota in the default namespace with a hard limit (4 pods, requests: 2 cpu,requests: 2Gi memory, limits: 4 cpu, limits: 4Gi)
+and an nginx pod that requests 1 cpu and 1Gi memory with a limit of 2 cpu and 2Gi memory</p>
 
 <details><summary>show</summary>
 <p>
@@ -97,11 +100,11 @@ metadata:
   namespace: default
 spec:
   hard:
-    pods: "10"
-    requests.cpu: "4"
-    requests.memory: 4Gi
-    limits.cpu: "10"
-    limits.memory: 10Gi
+    pods: "4"
+    requests.cpu: "2"
+    requests.memory: 2Gi
+    limits.cpu: "4"
+    limits.memory: 4Gi
     
 $ cat podquota.yaml
 
@@ -132,6 +135,7 @@ spec:
 </details>
 
 ### Understand how to run multiple schedulers and how to configure Pods to use them
+<p>Create a scheduler pod (in the kube-system namespace) using k8s.gcr.io/kube-scheduler-amd64:v1.11.3 as image + an nginx pod that use this scheduler</p>
 
 <details><summary>show</summary>
 <p>
@@ -151,9 +155,9 @@ spec:
   - command:
     - kube-scheduler
     - --address=127.0.0.1
-    - --kubeconfig=/etc/kubernetes/scsheduler.conf
-    - -- leader-elect=true
-    - --lock-object-name=my-custom-scsheduler
+    - --kubeconfig=/etc/kubernetes/scheduler.conf
+    - --leader-elect=true
+    - --lock-object-name=my-custom-scheduler
     image: k8s.gcr.io/kube-scheduler-amd64:v1.11.3
     name: kube-scheduler
 ```
@@ -176,6 +180,7 @@ spec:
 </details>
 
 ### Manually schedule a Pod without a scheduler
+<p>Create a busybox pod and schedule it without a scheduler</p>
 
 <details><summary>show</summary>
 <p>
